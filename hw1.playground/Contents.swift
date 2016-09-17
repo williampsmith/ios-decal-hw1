@@ -22,12 +22,15 @@ class Words {
 //: ### variables the same type? If not, why?
 
 
-//: [EXPLAIN YOUR ANSWER HERE]
+//: [Yes, the values set to the instance variables are of type Implicitly Unwrapped String Optional, 
+//: while the values passed to the init method are of type String Optional.
+//: This means that the isntance variables are force unwrapped dueing initialization. However, this does
+//: not mean that the value cannot still take on nil. It can.
 
 
 //: ## Q2: Variable Types and Function Types
-    func arePalindromes(_ words: [String]) -> Bool {
-        let reversedWords = words.map() {String($0.characters.reversed())}
+    class func arePalindromes(_ words: [String]) -> Bool {
+        let reversedWords = words.map({String($0.characters.reversed())})
         let numElements = words.count
         
         for i in 0 ..< numElements {
@@ -35,20 +38,40 @@ class Words {
                 return false
             }
         }
+        return true
     }
+    
+    
 //: ### Why does the compiler dislike the **for loop**? Fix it.
 //: ### What else is wrong with this function? You may have to refer to (but **not**
 //: ### change) the code at the very bottom. Debug the function.
 
 
-//: [EXPLAIN YOUR ANSWER HERE]
+//: [The first problem with the code is that the syntax for using the map function was incorrect.
+//: The map function takes a function as an argument, therefore the function needed to be passed
+//: within the parenthesis. Next, we had a compilation error because the function was initially
+//: declared as an instance member, i.e. it can only be called by instances of the class. The usage
+//: below was that of a type member, i.e. it assumed the method can be called by the class itself.
+//: The proper corrective action is to add the static (or, optionally, the class. Not entirely sure of the 
+//: difference) keyword in order to declare the method as callable by the class type (or, in the case of
+//: using the class keyword, it would be callable by both the class or an instance of the class). Also, 
+//: as a final error, the function should return true if it exits the while loop.]
 
 
 //: ## Q3: More Functions and Object Initialization
-    class func isAnagram() -> Bool {
-        var countLetters : [Character : Int] //Line X
-        var lenA = self.wordA.characters.count
-        var lenB = self.wordB.characters.count
+    func isAnagram() -> Bool {
+        var countLetters  = [Character : Int?]() //Line X
+        
+        let lenA : Int
+        let lenB : Int
+        
+        if let val = self.wordA?.characters.count {
+            lenA = val
+        } else {return false} // if wordA is nil, return false.
+        
+        if let val = self.wordB?.characters.count {
+            lenB = val
+        } else {return false} // if wordA is nil, return false.
         
         if lenA != lenB {
             return false
@@ -60,7 +83,7 @@ class Words {
         for i in 0...lenA-1 {
             let letter = arrA[i]
             if let val = countLetters[letter] { //Line Y
-                countLetters[letter] = val + 1
+                countLetters[letter] = val! + 1
             } else {
                 countLetters[letter] = 1
             }
@@ -69,19 +92,19 @@ class Words {
         for i in 0...lenB-1 {
             let letter = arrB[i]
             if let val = countLetters[letter] {
-                countLetters[letter] = val - 1
+                countLetters[letter] = val! - 1
             } else {
                 return false
             }
         }
         
-        for (letter, count) in countLetters {
+        for (_, count) in countLetters {
             if count != 0 {
                 return false
             }
         }
         
-        return nil
+        return true
     }
 //: ### What is the problem with declaring **countLetters** as we do in **Line X**,
 //: ### and then using it in **Line Y**? Fix it (by only changing **Line X**).
@@ -89,7 +112,14 @@ class Words {
 //: ### change) the code at the very bottom. Debug the function.
 
 
-//: [EXPLAIN YOUR ANSWER HERE]
+//: [Problem 1: Last line should return true in the case that all map values are zero.
+//: Proble, 2: The method was declared to be of class type, rather than of instance type. Deleting the
+//: "class" keyword fixes this. Problem 3: "let var" is declaring a variable constant (oxymoron). One
+//: has to go. Since we're clearly trying to use optional binding here, "let" stays, "var" goes.
+//: Problem 3: Trying to use optional binding on a non-optional type from dictionary value. 
+//: Solution: Declare Dictionary value as Int Optional, and force unwrap in the body of the optional binding.
+//: Problem 4: Dictionary was declared but not initialized, and hence was referenced before being initialized.
+//: Solution: Use alternate initializer: var countLetters  = [Character : Int?]()  ]
     
     
 }
