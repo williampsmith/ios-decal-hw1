@@ -30,7 +30,7 @@ class Words {
 
 //: ## Q2: Variable Types and Function Types
     class func arePalindromes(_ words: [String]) -> Bool {
-        let reversedWords = words.map({String($0.characters.reversed())})
+        let reversedWords = words.map() { String($0.characters.reversed()) }
         let numElements = words.count
         
         for i in 0 ..< numElements {
@@ -47,15 +47,13 @@ class Words {
 //: ### change) the code at the very bottom. Debug the function.
 
 
-//: [The first problem with the code is that the syntax for using the map function was incorrect.
-//: The map function takes a function as an argument, therefore the function needed to be passed
-//: within the parenthesis. Next, we had a compilation error because the function was initially
+//: [There is a compilation error because the function was initially
 //: declared as an instance member, i.e. it can only be called by instances of the class. The usage
 //: below was that of a type member, i.e. it assumed the method can be called by the class itself.
-//: The proper corrective action is to add the static (or, optionally, the class. Not entirely sure of the 
-//: difference) keyword in order to declare the method as callable by the class type (or, in the case of
-//: using the class keyword, it would be callable by both the class or an instance of the class). Also, 
-//: as a final error, the function should return true if it exits the while loop.]
+//: The proper corrective action is to add the class keyword in order to declare the method as callable by 
+//: class type (or, in the case of using the class keyword, it would be callable by both the class or
+//: an instance of the class). Also, as a final error, the function should return true if it exits the 
+//: while loop.]
 
 
 //: ## Q3: More Functions and Object Initialization
